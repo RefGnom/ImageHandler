@@ -1,56 +1,34 @@
-﻿using System.Drawing.Imaging;
-
-namespace ImageHandler;
+﻿namespace ImageHandler;
 
 internal class MyForm : Form
 {
+    private Size windowSize = new(720, 480);
     private readonly SaveFileDialog saveFileDialog = new();
     private readonly OpenFileDialog openFileDialog = new();
 
     private readonly Label hint = new();
-
-    private Image? currentImage;
+    private readonly PictureBox pictureBox = new();
 
     public MyForm()
     {
-        InitializeFileDialogs();
         InitializeComponent();
-    }
-
-    private void InitializeFileDialogs()
-    {
-        saveFileDialog.Filter = "png|*.png|jpeg|*.jpeg";
-        saveFileDialog.FileOk += (s, e) =>
+        InitializeFileDialogs();
+        InitializeGUI();
+        SizeChanged += (s, e) =>
         {
-            if (s is not SaveFileDialog fileDialog)
-                return;
-            if (currentImage is null)
-            {
-                hint.Text = "Нечего сохранять!";
-                return;
-            }
-            var fileStream = fileDialog.OpenFile();
-            currentImage.Save(fileStream, ImageFormat.Png);
-            fileStream.Close();
-        };
-
-        openFileDialog.Filter = "png|*.png|jpeg|*.jpeg";
-        openFileDialog.FileOk += (s, e) =>
-        {
-            if (s is not OpenFileDialog fileDialog)
-                return;
-            var stream = fileDialog.OpenFile();
-            var image = Image.FromStream(stream);
-            hint.Text = $"{image.Width} {image.Height}";
-            currentImage = image;
+            var window = s as MyForm;
+            windowSize = window!.ClientSize;
         };
     }
 
     private void InitializeComponent()
     {
-        ClientSize = new Size(720, 480);
+        ClientSize = windowSize;
         Name = "Image handler";
+    }
 
+    private void InitializeGUI()
+    {
         var location = new Point(0, 0);
         var load = new Button()
         {
@@ -81,10 +59,42 @@ internal class MyForm : Form
         };
         Controls.Add(save);
 
-        location.Y += save.Height;
-        hint.Location = location;
+        hint.Location = new Point(load.Width * 2, 0);
         hint.Size = save.Size + new Size(300, 0);
         hint.Font = save.Font;
         Controls.Add(hint);
+
+        pictureBox.Location = new Point(location.X + load.Width + 10, hint.Height + 10);
+        Controls.Add(pictureBox);
+    }
+
+    private void InitializeFileDialogs()
+    {
+        saveFileDialog.Filter = "png|*.png|jpeg|*.jpeg";
+        saveFileDialog.FileOk += (s, e) =>
+        {
+            if (s is not SaveFileDialog fileDialog)
+                return;
+            if (pictureBox.Image is null)
+            {
+                hint.Text = "Нечего сохранять!";
+                return;
+            }
+            var fileStream = fileDialog.OpenFile();
+            pictureBox.Image.Save(fileStream, pictureBox.Image.RawFormat);
+            fileStream.Close();
+        };
+
+        openFileDialog.Filter = "png|*.png|jpeg|*.jpeg";
+        openFileDialog.FileOk += (s, e) =>
+        {
+            if (s is not OpenFileDialog fileDialog)
+                return;
+            var stream = fileDialog.OpenFile();
+            var image = Image.FromStream(stream);
+            pictureBox.Image = image;
+            pictureBox.Size = image.Size;
+            pictureBox.BorderStyle = BorderStyle.FixedSingle;
+        };
     }
 }
