@@ -6,6 +6,8 @@ internal static class Program
     static void Main()
     {
         ApplicationConfiguration.Initialize();
-        Application.Run(new MyForm());
+        var window = new MyForm();
+        window.AddFilter(new LighteningFilter());
+        Application.Run(window);
     }
 }
