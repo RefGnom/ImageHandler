@@ -8,6 +8,7 @@ internal static class Program
         ApplicationConfiguration.Initialize();
         var window = new MyForm();
         window.AddFilter(new LighteningFilter());
+        window.AddFilter(new MakeInBlackAndWhiteFilter());
         Application.Run(window);
     }
 }

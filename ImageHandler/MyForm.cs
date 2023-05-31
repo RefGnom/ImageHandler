@@ -5,6 +5,7 @@ namespace ImageHandler;
 internal class MyForm : Form
 {
     private readonly Size ButtonSize = new(150, 30);
+    private readonly Size ImageMaxSize = new(1500, 500);
     private readonly int indent = 5;
 
     private readonly SaveFileDialog saveFileDialog = new();
@@ -27,8 +28,6 @@ internal class MyForm : Form
         InitializeComponent();
         InitializeFileDialogs();
         InitializeGUI();
-
-        Text = "Обработчик изображений";
     }
 
     public void AddFilter(IFilter filter)
@@ -40,6 +39,7 @@ internal class MyForm : Form
 
     private void InitializeComponent()
     {
+        Text = "Обработчик изображений";
         ClientSize = new Size(1080, 720);
         ResumeLayout(false);
     }
@@ -69,7 +69,10 @@ internal class MyForm : Form
         load.Click += (s, e) =>
         {
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+            {
                 apply.Enabled = true;
+                processed.Hide();
+            }
         };
         Controls.Add(load);
 
@@ -95,10 +98,12 @@ internal class MyForm : Form
         Controls.Add(filtersSelect);
 
         original = new PictureBox();
+        original.BorderStyle = BorderStyle.FixedSingle;
         original.Hide();
         Controls.Add(original);
 
         processed = new PictureBox();
+        processed.BorderStyle = BorderStyle.FixedSingle;
         processed.Hide();
         Controls.Add(processed);
     }
@@ -112,7 +117,8 @@ internal class MyForm : Form
         processed.Location = new Point(filtersSelect.Right + indent, original.Bottom + indent);
         processed.Size = original.Size;
 
-        ClientSize = new Size(original.Right + indent, processed.Bottom + indent);
+        if (original.Right + indent > ClientSize.Width || processed.Bottom + indent > ClientSize.Height)
+            ClientSize = new Size(original.Right + indent, processed.Bottom + indent);
 
         var location = new Point(indent, ClientSize.Height - ButtonSize.Height - indent);
         save.Location = location;
@@ -151,6 +157,11 @@ internal class MyForm : Form
 
     private void LoadBitmap(Bitmap bmp)
     {
+        if (bmp.Size.Width > ImageMaxSize.Width || bmp.Size.Height > ImageMaxSize.Height)
+        {
+            var scale = Math.Min((float)ImageMaxSize.Width / bmp.Width, (float)ImageMaxSize.Height / bmp.Height);
+            bmp = bmp.ApplyScale(scale);
+        }
         originalBmp = bmp;
         originalPhoto = Convertor.Bitmap2Photo(bmp);
         original.Show();
@@ -210,14 +221,10 @@ internal class MyForm : Form
         var filter = (IFilter)filtersSelect.SelectedItem;
         var photo = filter.Process(originalPhoto, data);
         var processedBmp = Convertor.Photo2Bitmap(photo);
-        // Вынести в отдельный метод другого класса
         if (processedBmp.Width > originalBmp.Width || processedBmp.Height > originalBmp.Height)
         {
-            float k = Math.Min((float)originalBmp.Width / processedBmp.Width, (float)originalBmp.Height / processedBmp.Height);
-            var newBmp = new Bitmap((int)(processedBmp.Width * k), (int)(processedBmp.Height * k));
-            var graphics = Graphics.FromImage(newBmp);
-            graphics.DrawImage(processedBmp, new Rectangle(0, 0, newBmp.Width, newBmp.Height), new Rectangle(0, 0, processedBmp.Width, processedBmp.Height), GraphicsUnit.Pixel);
-            processedBmp = newBmp;
+            var scale = Math.Min((float)originalBmp.Width / processedBmp.Width, (float)originalBmp.Height / processedBmp.Height);
+            processedBmp = processedBmp.ApplyScale(scale);
         }
         processed.Image = processedBmp;
         processed.Show();
