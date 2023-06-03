@@ -30,9 +30,32 @@ internal struct Pixel
         set => b = AssertValue(value);
     }
 
-    public Color ToColor()
+    public double this[int channel]
     {
-        return Color.FromArgb(ToChannel(A), ToChannel(R), ToChannel(G), ToChannel(B));
+        get
+        {
+            if (channel < 0 || channel > 2)
+                throw new IndexOutOfRangeException($"Wrong color value {channel} (the value must be between 0 and 2");
+            if (channel == 0) return r;
+            if (channel == 1) return g;
+            return b;
+        }
+        set
+        {
+            if (channel < 0 || channel > 2)
+                throw new IndexOutOfRangeException($"Wrong color value {channel} (the value must be between 0 and 2");
+            if (channel == 0) R = value;
+            if (channel == 1) G = value;
+            B = value;
+        }
+    }
+
+    public Pixel(double alpha, double red, double green, double blue)
+    {
+        a = AssertValue(alpha);
+        r = AssertValue(red);
+        g = AssertValue(green);
+        b = AssertValue(blue);
     }
 
     public static int ToChannel(double value)
@@ -63,6 +86,11 @@ internal struct Pixel
         return pixel;
     }
 
+    public static explicit operator Color(Pixel p)
+    {
+        return Color.FromArgb(ToChannel(p.A), ToChannel(p.R), ToChannel(p.G), ToChannel(p.B));
+    }
+
     public override string ToString()
     {
         return $"A:{A} R:{R} G:{G} B:{B}";
@@ -73,7 +101,6 @@ internal struct Pixel
         if (value < 0 || value > 1)
         {
             value = 1;
-            //throw new Exception(string.Format("Wrong color value {0} (the value must be between 0 and 1", value));
         }
         return value;
     }
@@ -82,7 +109,7 @@ internal struct Pixel
     {
         if (value < 0 || value > 1)
         {
-            throw new Exception(string.Format("Wrong color value {0} (the value must be between 0 and 1", value));
+            throw new Exception($"Wrong color value {value} (the value must be between 0 and 1");
         }
         return value;
     }

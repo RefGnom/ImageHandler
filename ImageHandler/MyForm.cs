@@ -28,6 +28,7 @@ internal class MyForm : Form
         InitializeComponent();
         InitializeFileDialogs();
         InitializeGUI();
+        SizeChanged += (s, e) => ChangePositionGUI();
     }
 
     public void AddFilter(IFilter filter)
@@ -110,15 +111,20 @@ internal class MyForm : Form
 
     private void ChangePositionGUI()
     {
-        original.Image = originalBmp;
-        original.Location = new Point(filtersSelect.Right + indent, indent);
-        original.ClientSize = originalBmp.Size;
+        if (originalBmp is not null)
+        {
+            original.Image = originalBmp;
+            original.Location = new Point(filtersSelect.Right + indent, indent);
+            original.ClientSize = originalBmp.Size;
 
-        processed.Location = new Point(filtersSelect.Right + indent, original.Bottom + indent);
-        processed.Size = original.Size;
+            processed.Location = new Point(filtersSelect.Right + indent, original.Bottom + indent);
+            processed.Size = original.Size;
+        }
 
-        if (original.Right + indent > ClientSize.Width || processed.Bottom + indent > ClientSize.Height)
-            ClientSize = new Size(original.Right + indent, processed.Bottom + indent);
+        if (original.Right + indent > ClientSize.Width)
+            ClientSize = new Size(original.Right + indent, ClientSize.Height);
+        if (processed.Bottom + indent > ClientSize.Height)
+            ClientSize = new Size(ClientSize.Width, processed.Bottom + indent);
 
         var location = new Point(indent, ClientSize.Height - ButtonSize.Height - indent);
         save.Location = location;
@@ -203,10 +209,10 @@ internal class MyForm : Form
             box.Width = 50;
             box.Height = 20;
             box.Value = (decimal)param.DefaultValue;
-            box.Increment = (decimal)param.Increment / 3;
+            box.Increment = (decimal)param.Increment;
             box.Maximum = (decimal)param.MaxValue;
             box.Minimum = (decimal)param.MinValue;
-            box.DecimalPlaces = 2;
+            box.DecimalPlaces = param.IsInteger ? 0 : 2;
             parametersPanel.Controls.Add(box);
             y += label.Height + 5;
             parametersControls.Add(box);

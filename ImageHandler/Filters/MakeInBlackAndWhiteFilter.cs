@@ -6,7 +6,7 @@ internal class MakeInBlackAndWhiteFilter : IFilter
     {
         return new[]
         {
-            new ParameterInfo("Яркость", 1, 0, 2, 0.1),
+            new ParameterInfo("Яркость", 1, 0, 2, 0.05),
         };
     }
 

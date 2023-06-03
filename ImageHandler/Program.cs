@@ -9,6 +9,8 @@ internal static class Program
         var window = new MyForm();
         window.AddFilter(new LighteningFilter());
         window.AddFilter(new MakeInBlackAndWhiteFilter());
+        window.AddFilter(new InvertionFilter());
+        window.AddFilter(new ChannelShuffleFilter());
         Application.Run(window);
     }
 }
