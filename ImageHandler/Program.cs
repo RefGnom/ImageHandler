@@ -11,6 +11,7 @@ internal static class Program
         window.AddFilter(new MakeInBlackAndWhiteFilter());
         window.AddFilter(new InvertionFilter());
         window.AddFilter(new ChannelShuffleFilter());
+        window.AddFilter(new BlurFilter());
         Application.Run(window);
     }
 }
