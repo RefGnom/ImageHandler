@@ -5,7 +5,7 @@ namespace ImageHandler;
 public class MyForm : Form
 {
     private readonly Size ButtonSize = new(150, 30);
-    private readonly Size ImageMaxSize = new(1500, 500);
+    private readonly Size ImageMaxSize = new(1200, 400);
     private readonly int indent = 5;
 
     private readonly SaveFileDialog saveFileDialog = new();
