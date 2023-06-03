@@ -1,6 +1,6 @@
 ﻿namespace ImageHandler;
 
-internal struct Pixel
+public struct Pixel
 {
     private double a;
     public double A

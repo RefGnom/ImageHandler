@@ -2,7 +2,7 @@
 
 namespace ImageHandler;
 
-internal class MyForm : Form
+public class MyForm : Form
 {
     private readonly Size ButtonSize = new(150, 30);
     private readonly Size ImageMaxSize = new(1500, 500);

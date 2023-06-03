@@ -1,6 +1,6 @@
 ﻿namespace ImageHandler;
 
-internal interface IFilter
+public interface IFilter
 {
     ParameterInfo[] GetParameters();
 

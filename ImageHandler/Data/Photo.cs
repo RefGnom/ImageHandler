@@ -1,6 +1,6 @@
 ﻿namespace ImageHandler;
 
-internal class Photo
+public class Photo
 {
     public readonly int Width;
     public readonly int Height;

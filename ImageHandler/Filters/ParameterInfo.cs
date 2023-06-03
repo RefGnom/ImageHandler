@@ -1,6 +1,6 @@
 ﻿namespace ImageHandler;
 
-internal class ParameterInfo
+public class ParameterInfo
 {
     public string Name { get; init; }
     public double DefaultValue { get; init; }
