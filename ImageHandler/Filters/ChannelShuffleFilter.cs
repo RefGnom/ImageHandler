@@ -2,18 +2,13 @@
 
 internal class ChannelShuffleFilter : PixelFilter
 {
-    public override ParameterInfo[] GetParameters()
-    {
-        return new ParameterInfo[]
-        {
-            new ParameterInfo("Смещение", 0, 0, 3, 0.1)
-        };
-    }
+    public ChannelShuffleFilter() : base(new ChannelShuffleParameters()) { }
 
-    public override Pixel ProcessPixel(Pixel original, double[] parameters)
+    public override Pixel ProcessPixel(Pixel original, IParameters parameters)
     {
-        var shift = (int)parameters[0];
-        var percent = parameters[0] - shift;
+        var shift = (parameters as ChannelShuffleParameters)!.Shift;
+        var percent = (parameters as ChannelShuffleParameters)!.Percent;
+
         var pixel = new Pixel();
         pixel.A = original.A;
 

@@ -2,17 +2,11 @@
 
 internal class LighteningFilter : PixelFilter
 {
-    public override ParameterInfo[] GetParameters()
-    {
-        return new[]
-        {
-            new ParameterInfo("Коэффициент", 1, 0, 2, 0.05),
-        };
-    }
+    public LighteningFilter() : base(new LighteningParameters()) { }
 
-    public override Pixel ProcessPixel(Pixel original, double[] parameters)
+    public override Pixel ProcessPixel(Pixel original, IParameters parameters)
     {
-        return original * parameters[0];
+        return original * (parameters as LighteningParameters)!.Coefficient;
     }
 
     public override string ToString()

@@ -2,12 +2,11 @@
 
 internal class InvertionFilter : PixelFilter
 {
-    public override ParameterInfo[] GetParameters()
+    public InvertionFilter() : base(new EmpyParameters())
     {
-        return Array.Empty<ParameterInfo>();
     }
 
-    public override Pixel ProcessPixel(Pixel original, double[] parameters)
+    public override Pixel ProcessPixel(Pixel original, IParameters parameters)
     {
         return new Pixel(original.A, 1 - original.R, 1 - original.G, 1 - original.B);
     }

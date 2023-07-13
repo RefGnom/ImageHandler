@@ -2,19 +2,13 @@
 
 internal class GrayScaleFilter : PixelFilter
 {
-    public override ParameterInfo[] GetParameters()
-    {
-        return new[]
-        {
-            new ParameterInfo("Яркость", 1, 0, 2, 0.05),
-        };
-    }
+    public GrayScaleFilter() : base(new GrayScaleParameters()) { }
 
-    public override Pixel ProcessPixel(Pixel original, double[] parameters)
+    public override Pixel ProcessPixel(Pixel original, IParameters parameters)
     {
         var brightness = original.R + original.G + original.B;
         brightness /= 3;
-        return new Pixel(original.A, brightness, brightness, brightness) * parameters[0];
+        return new Pixel(original.A, brightness, brightness, brightness) * (parameters as GrayScaleParameters).Brightness;
     }
 
     public override string ToString()
