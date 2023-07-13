@@ -8,7 +8,7 @@ internal static class Program
         ApplicationConfiguration.Initialize();
         var window = new MyForm();
         window.AddFilter(new LighteningFilter());
-        window.AddFilter(new MakeInBlackAndWhiteFilter());
+        window.AddFilter(new GrayScaleFilter());
         window.AddFilter(new InvertionFilter());
         window.AddFilter(new ChannelShuffleFilter());
         window.AddFilter(new BlurFilter());

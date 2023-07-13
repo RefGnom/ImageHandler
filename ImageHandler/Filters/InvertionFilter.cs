@@ -1,24 +1,15 @@
 ﻿namespace ImageHandler;
 
-internal class InvertionFilter : IFilter
+internal class InvertionFilter : PixelFilter
 {
-    public ParameterInfo[] GetParameters()
+    public override ParameterInfo[] GetParameters()
     {
         return Array.Empty<ParameterInfo>();
     }
 
-    public Photo Process(Photo original, double[] parameters)
+    public override Pixel ProcessPixel(Pixel original, double[] parameters)
     {
-        var result = new Photo(original.Width, original.Height);
-        for (int x = 0; x < result.Width; x++)
-        {
-            for (int y = 0; y < result.Height; y++)
-            {
-                var p = original[x, y];
-                result[x, y] = new Pixel(p.A, 1 - p.R, 1 - p.G, 1 - p.B);
-            }
-        }
-        return result;
+        return new Pixel(original.A, 1 - original.R, 1 - original.G, 1 - original.B);
     }
 
     public override string ToString()

@@ -1,8 +1,8 @@
 ﻿namespace ImageHandler;
 
-internal class LighteningFilter : IFilter
+internal class LighteningFilter : PixelFilter
 {
-    public ParameterInfo[] GetParameters()
+    public override ParameterInfo[] GetParameters()
     {
         return new[]
         {
@@ -10,21 +10,13 @@ internal class LighteningFilter : IFilter
         };
     }
 
+    public override Pixel ProcessPixel(Pixel original, double[] parameters)
+    {
+        return original * parameters[0];
+    }
+
     public override string ToString()
     {
         return "Осветление/затемнение";
-    }
-
-    public Photo Process(Photo original, double[] parameters)
-    {
-        var result = new Photo(original.Width, original.Height);
-        for (int x = 0; x < result.Width; x++)
-        {
-            for (int y = 0; y < result.Height; y++)
-            {
-                result[x, y] = original[x, y] * parameters[0];
-            }
-        }
-        return result;
     }
 }
