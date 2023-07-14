@@ -1,12 +1,13 @@
 ﻿namespace ImageHandler;
 
-internal abstract class ParameterizedFilter : IFilter
+internal abstract class ParameterizedFilter<T> : IFilter
+    where T : IParameters, new()
 {
-    private readonly IParameters parameters;
+    private readonly T parameters;
 
-    public ParameterizedFilter(IParameters parameters)
+    public ParameterizedFilter()
     {
-        this.parameters = parameters;
+        parameters = new T();
     }
 
     public ParameterInfo[] GetParameters()
@@ -20,5 +21,5 @@ internal abstract class ParameterizedFilter : IFilter
         return Procces(original, parameters);
     }
 
-    public abstract Photo Procces(Photo original, IParameters parameters);
+    public abstract Photo Procces(Photo original, T parameters);
 }

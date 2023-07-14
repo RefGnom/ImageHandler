@@ -1,13 +1,11 @@
 ﻿namespace ImageHandler;
 
-internal class ChannelShuffleFilter : PixelFilter
+internal class ChannelShuffleFilter : PixelFilter<ChannelShuffleParameters>
 {
-    public ChannelShuffleFilter() : base(new ChannelShuffleParameters()) { }
-
-    public override Pixel ProcessPixel(Pixel original, IParameters parameters)
+    public override Pixel ProcessPixel(Pixel original, ChannelShuffleParameters parameters)
     {
-        var shift = (parameters as ChannelShuffleParameters)!.Shift;
-        var percent = (parameters as ChannelShuffleParameters)!.Percent;
+        var shift = parameters.Shift;
+        var percent = parameters.Percent;
 
         var pixel = new Pixel();
         pixel.A = original.A;

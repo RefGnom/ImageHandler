@@ -1,12 +1,11 @@
 ﻿namespace ImageHandler;
 
-internal abstract class PixelFilter : ParameterizedFilter
+internal abstract class PixelFilter<T> : ParameterizedFilter<T>
+    where T : IParameters, new()
 {
-    public PixelFilter(IParameters parameters) : base(parameters) { }
+    public abstract Pixel ProcessPixel(Pixel original, T parameters);
 
-    public abstract Pixel ProcessPixel(Pixel original, IParameters parameters);
-
-    public override Photo Procces(Photo original, IParameters parameters)
+    public override Photo Procces(Photo original, T parameters)
     {
         var result = new Photo(original.Width, original.Height);
 
