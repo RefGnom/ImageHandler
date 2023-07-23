@@ -33,4 +33,14 @@ internal static class Filters
 
             return pixel;
         });
+
+    public static PhotoFilter<BlurFilterParameters> BlurFilter => new("Размытие",
+        (original, parameters) =>
+        {
+            var result = new Photo(original.Width, original.Height);
+            for (int x = 0; x < result.Width; x++)
+                for (int y = 0; y < result.Height; y++)
+                    result[x, y] = original.GetMedian(x, y, parameters.CoreSize);
+            return result;
+        });
 }

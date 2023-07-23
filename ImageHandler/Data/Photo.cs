@@ -18,4 +18,19 @@ public class Photo
         Height = height;
         data = new Pixel[Width, Height];
     }
+
+    public Pixel GetMedian(int x, int y, int size)
+    {
+        var pixels = new List<Pixel>();
+        for (int i = x - size / 2; i <= x + size / 2; i++)
+        {
+            for (int j = y - size / 2; j <= y + size / 2; j++)
+            {
+                if (i > 0 && i < Width && j > 0 && j < Height)
+                    pixels.Add(data[i, j]);
+            }
+        }
+        pixels.Sort((f, s) => (f.R + f.G + f.B).CompareTo((s.R + s.G + s.B)));
+        return pixels[pixels.Count / 2];
+    }
 }

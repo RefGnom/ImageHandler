@@ -8,7 +8,7 @@ internal class LighteningParameters : IParameters
     {
         return new[]
         {
-            new ParameterInfo("Коэффициент", 1, 0, 2, 0.05),
+            new ParameterInfo("Коэффициент", 1, 0, 10, 0.05),
         };
     }
 

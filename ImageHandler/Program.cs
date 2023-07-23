@@ -12,7 +12,7 @@ internal static class Program
             Filters.GrayScaleFilter,
             Filters.InvertionFilter,
             Filters.ChannelShuffleFilter,
-            new BlurFilter()
+            Filters.BlurFilter
         };
         Application.Run(window);
     }
