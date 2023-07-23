@@ -1,22 +1,32 @@
 ﻿namespace ImageHandler;
 
-internal abstract class PixelFilter<T> : ParameterizedFilter<T>
-    where T : IParameters, new()
+internal class PixelFilter<TParameters> : ParameterizedFilter<TParameters>
+    where TParameters : IParameters, new()
 {
-    public abstract Pixel ProcessPixel(Pixel original, T parameters);
+    private readonly string name;
+    private readonly Func<Pixel, TParameters, Pixel> processor;
 
-    public override Photo Procces(Photo original, T parameters)
+    public PixelFilter(string name, Func<Pixel, TParameters, Pixel> processor)
+    {
+        this.name = name;
+        this.processor = processor;
+    }
+
+    public override Photo Procces(Photo original, TParameters parameters)
     {
         var result = new Photo(original.Width, original.Height);
 
         for (int x = 0; x < original.Width; x++)
         {
             for (int y = 0; y < original.Height; y++)
-            {
-                result[x, y] = ProcessPixel(original[x, y], parameters);
-            }
+                result[x, y] = processor(original[x, y], parameters);
         }
 
         return result;
+    }
+
+    public override string ToString()
+    {
+        return name;
     }
 }

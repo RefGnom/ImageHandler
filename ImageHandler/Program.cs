@@ -6,12 +6,14 @@ internal static class Program
     static void Main()
     {
         ApplicationConfiguration.Initialize();
-        var window = new MyForm();
-        window.AddFilter(new LighteningFilter());
-        window.AddFilter(new GrayScaleFilter());
-        window.AddFilter(new InvertionFilter());
-        window.AddFilter(new ChannelShuffleFilter());
-        window.AddFilter(new BlurFilter());
+        var window = new MyForm()
+        {
+            Filters.LighteningFilter,
+            Filters.GrayScaleFilter,
+            Filters.InvertionFilter,
+            Filters.ChannelShuffleFilter,
+            new BlurFilter()
+        };
         Application.Run(window);
     }
 }

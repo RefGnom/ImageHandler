@@ -1,8 +1,9 @@
-﻿using System.Drawing.Imaging;
+﻿using System.Collections;
+using System.Drawing.Imaging;
 
 namespace ImageHandler;
 
-public class MyForm : Form
+public class MyForm : Form, IEnumerable<IFilter>
 {
     private readonly Size ButtonSize = new(150, 30);
     private readonly Size ImageMaxSize = new(1200, 400);
@@ -31,7 +32,7 @@ public class MyForm : Form
         SizeChanged += (s, e) => ChangePositionGUI();
     }
 
-    public void AddFilter(IFilter filter)
+    public void Add(IFilter filter)
     {
         filtersSelect.Items.Add(filter);
         if (filtersSelect.SelectedIndex == -1)
@@ -235,5 +236,16 @@ public class MyForm : Form
         processed.Image = processedBmp;
         processed.Show();
         save.Enabled = true;
+    }
+
+    public IEnumerator<IFilter> GetEnumerator()
+    {
+        foreach (IFilter filter in filtersSelect.Items)
+            yield return filter;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
