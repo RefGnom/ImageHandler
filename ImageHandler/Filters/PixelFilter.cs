@@ -3,12 +3,10 @@
 internal class PixelFilter<TParameters> : ParameterizedFilter<TParameters>
     where TParameters : IParameters, new()
 {
-    private readonly string name;
     private readonly Func<Pixel, TParameters, Pixel> processor;
 
-    public PixelFilter(string name, Func<Pixel, TParameters, Pixel> processor)
+    public PixelFilter(string name, Func<Pixel, TParameters, Pixel> processor) : base(name)
     {
-        this.name = name;
         this.processor = processor;
     }
 
@@ -23,10 +21,5 @@ internal class PixelFilter<TParameters> : ParameterizedFilter<TParameters>
         }
 
         return result;
-    }
-
-    public override string ToString()
-    {
-        return name;
     }
 }
