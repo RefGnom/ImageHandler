@@ -1,18 +1,11 @@
 ﻿namespace ImageHandler;
 
-internal class BlurFilterParameters : IParameters
+internal class BlurFilterParameters : FilterParameters
 {
+    [ParameterInfo("Размер ядра", 3, 3, 9, 2, true)]
     public int CoreSize { get; private set; }
 
-    public ParameterInfo[] GetDesсription()
-    {
-        return new ParameterInfo[]
-        {
-            new ParameterInfo("Размер ядра", 3, 3, 9, 2, true)
-        };
-    }
-
-    public void Parse(double[] values)
+    public override void Parse(double[] values)
     {
         CoreSize = (int)values[0];
     }

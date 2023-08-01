@@ -1,19 +1,12 @@
 ﻿namespace ImageHandler;
 
-internal class ChannelShuffleParameters : IParameters
+internal class ChannelShuffleParameters : FilterParameters
 {
-    public int Shift { get; set; }
-    public double Percent { get; set; }
+    [ParameterInfo("Смещение", 0, 0, 3, 0.1)]
+    public int Shift { get; private set; }
+    public double Percent { get; private set; }
 
-    public ParameterInfo[] GetDesсription()
-    {
-        return new ParameterInfo[]
-        {
-            new ParameterInfo("Смещение", 0, 0, 3, 0.1)
-        };
-    }
-
-    public void Parse(double[] values)
+    public override void Parse(double[] values)
     {
         Shift = (int)values[0];
         Percent = values[0] - Shift;

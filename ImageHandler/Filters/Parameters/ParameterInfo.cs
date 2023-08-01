@@ -1,6 +1,7 @@
 ﻿namespace ImageHandler;
 
-public class ParameterInfo
+[AttributeUsage(AttributeTargets.Property)]
+public class ParameterInfo : Attribute
 {
     public string Name { get; init; }
     public double DefaultValue { get; init; }
